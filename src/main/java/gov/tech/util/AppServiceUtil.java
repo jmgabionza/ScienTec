@@ -1,5 +1,6 @@
 package gov.tech.util;
 
+import gov.tech.domain.LunchSession;
 import gov.tech.domain.Participant;
 import gov.tech.model.UserForm;
 import gov.tech.service.AppServiceDto;
@@ -16,6 +17,7 @@ public class AppServiceUtil {
         userForm.setName(dto.getName());
         userForm.setRestaurant(dto.getRestaurant());
         userForm.setSessionId(dto.getSessionId());
+        userForm.setResult(dto.getResult());
         userForm.setSessionActive(null != dto.getLunchSession() && dto.getLunchSession().isActive());
         return userForm;
     }
@@ -42,5 +44,13 @@ public class AppServiceUtil {
             userForms.add(userForm);
         }
         return userForms;
+    }
+
+    public static AppServiceDto mapLunchSessionToDto(LunchSession lunchSession){
+        AppServiceDto dto = new AppServiceDto();
+        dto.setLunchSession(lunchSession);
+        dto.setSessionId(lunchSession.getSessionId());
+        dto.setResult(lunchSession.getResult());
+        return dto;
     }
 }

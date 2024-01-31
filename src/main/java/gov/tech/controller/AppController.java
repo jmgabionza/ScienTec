@@ -1,7 +1,9 @@
 package gov.tech.controller;
 
+import gov.tech.exception.AppServiceException;
 import gov.tech.model.UserForm;
-import gov.tech.service.AppService;
+import gov.tech.service.ParticipantService;
+import gov.tech.service.SessionService;
 import gov.tech.service.AppServiceDto;
 import gov.tech.util.ControllerUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,15 @@ import java.util.List;
 public class AppController {
     @Value("${spring.application.name}")
     String appName;
+    SessionService sessionService;
+    ParticipantService participantService;
+
     @Autowired
-    AppService appService;
+    public AppController(SessionService sessionService, ParticipantService participantService) {
+        this.appName = appName;
+        this.sessionService = sessionService;
+        this.participantService = participantService;
+    }
 
     @GetMapping("/")
     public String homePage(Model model){
@@ -48,22 +57,32 @@ public class AppController {
 
     @PostMapping("/submitChoice")
     public String submitChoice(@ModelAttribute UserForm userForm, Model model){
-        System.out.println("/submitChoice controller reached!");
         AppServiceDto dto = ControllerUtil.transform(userForm);
-        appService.submitChoice(dto);
+        String response = participantService.submitChoice(dto);
         model.addAttribute("appName", appName);
-        model.addAttribute("response", "");
+        model.addAttribute("response", response);
 
         return "home";
     }
 
     @PostMapping("/searchResults")
     public String searchResults(@RequestParam String inputSessionId, Model model){
-        System.out.println("/searchResults controller reached!");
         model.addAttribute("inputSessionId", inputSessionId);
         model.addAttribute("appName", appName);
-        model.addAttribute("response", "");
-        List<UserForm> results = appService.getDemographics(inputSessionId);
+
+        UserForm lunchSession  = sessionService.getSession(inputSessionId);
+        List<UserForm> results = participantService.getDemographics(inputSessionId);
+
+        if (lunchSession == null){
+            model.addAttribute("errorResponse", "Session ID does not exist.");
+            return "results";
+        }
+        if (lunchSession.isSessionActive()){
+            model.addAttribute("response", "Session is still OPEN. Join now!");
+        }else {
+            model.addAttribute("response", "Session is already CLOSED. " + System.lineSeparator() +
+                    "Result = " + lunchSession.getResult());
+        }
         model.addAttribute("results", results);
 
         return "results";
@@ -71,31 +90,39 @@ public class AppController {
 
     @PostMapping("/createSession")
     public String createSession(@RequestParam String inputSessionId, Model model){
-        System.out.println("/createSession controller reached!");
-        appService.createSession(inputSessionId);
+        String response = sessionService.createSession(inputSessionId);
         model.addAttribute("appName", appName);
-        UserForm userForm = new UserForm();
-        model.addAttribute("userForm", userForm);
-        model.addAttribute("response", "");
+        model.addAttribute("response", response);
+        model.addAttribute("inputSessionId", inputSessionId);
 
-        return "home";
+        return "admin";
     }
 
     @PostMapping("/closeSession")
     public String closeSession(@RequestParam String inputSessionId, Model model){
-        System.out.println("/closeSession controller reached!");
-        List<UserForm> results = appService.getDemographics(inputSessionId);
-        model.addAttribute("results", results);
+        try{
+            List<UserForm> results = participantService.getDemographics(inputSessionId);
+            model.addAttribute("results", results);
 
-        String chosenRestaurant = appService.closeSession(inputSessionId);
-        model.addAttribute("appName", appName);
-        model.addAttribute("result", chosenRestaurant);
-        model.addAttribute("inputSessionId", inputSessionId);
+            String chosenRestaurant = sessionService.closeSession(inputSessionId);
+            model.addAttribute("appName", appName);
+            model.addAttribute("result", chosenRestaurant);
+            model.addAttribute("inputSessionId", inputSessionId);
 
 
-        UserForm userForm = new UserForm();
-        model.addAttribute("userForm", userForm);
-        model.addAttribute("response", "We are eating at..... " + chosenRestaurant + "!!!");
+            UserForm userForm = new UserForm();
+            model.addAttribute("userForm", userForm);
+            if (results.isEmpty() && chosenRestaurant.isBlank()){
+                model.addAttribute("response", "Looks like no one participated....");
+            }else {
+                model.addAttribute("response", "We are eating at..... " + chosenRestaurant + "!!!");
+            }
+        } catch (AppServiceException e) {
+            String response = e.getMessage();
+            model.addAttribute("response", response);
+            return "admin";
+
+        }
 
         return "results";
     }

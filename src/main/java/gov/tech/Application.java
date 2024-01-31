@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EntityScan(basePackages = {"gov.tech"})
 @ComponentScan("gov.tech")
-@EnableJpaRepositories
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

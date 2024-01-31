@@ -13,5 +13,6 @@ public class UserForm {
     private String restaurant;
     private boolean isSessionActive;
     private List<UserForm> userForms;
+    private String result;
 
 }

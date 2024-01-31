@@ -2,6 +2,7 @@ package gov.tech.dao.impl;
 
 import gov.tech.dao.SessionDao;
 import gov.tech.domain.LunchSession;
+import jakarta.persistence.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.springframework.stereotype.Repository;

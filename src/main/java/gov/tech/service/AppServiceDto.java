@@ -11,4 +11,5 @@ public class AppServiceDto {
     private String sessionId;
     private String restaurant;
     private LunchSession lunchSession;
+    private String result;
 }

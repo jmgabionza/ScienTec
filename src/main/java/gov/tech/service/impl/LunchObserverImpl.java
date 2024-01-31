@@ -1,7 +1,7 @@
 package gov.tech.service.impl;
 
 import gov.tech.dao.SessionDao;
-import gov.tech.dao.UserDao;
+import gov.tech.dao.ParticipantDao;
 import gov.tech.domain.LunchSession;
 import gov.tech.domain.Participant;
 import gov.tech.service.LunchObserver;
@@ -13,19 +13,26 @@ import java.util.Random;
 
 @Service
 public class LunchObserverImpl implements LunchObserver {
-    @Autowired
     SessionDao sessionDao;
+    ParticipantDao participantDao;
+
     @Autowired
-    UserDao userDao;
+    public LunchObserverImpl(SessionDao sessionDao, ParticipantDao participantDao) {
+        this.sessionDao = sessionDao;
+        this.participantDao = participantDao;
+    }
+
     @Override
     public List<Participant> publishResult(LunchSession lunchSession) {
-        return userDao.getUsersByActiveSessionId(lunchSession.getSessionId());
+        return participantDao.getUsersByActiveSessionId(lunchSession.getSessionId());
     }
 
     @Override
     public void inviteParticipants() {
-        List<Participant> participants =  userDao.getAll();
-        // TODO: invite participants e.g. via email (out of scope)
+        List<Participant> participants =  participantDao.getAll();
+        // TODO: invite participants and share the Session ID e.g. via email (out of scope)
+        System.out.println("Invitation to participate to the created session is sent to all users.");
+
     }
 
     @Override

@@ -16,6 +16,7 @@ public class ControllerUtil {
         dto.setName(userForm.getName());
         dto.setRestaurant(userForm.getRestaurant());
         dto.setSessionId(userForm.getSessionId());
+        dto.setResult(userForm.getResult());
         return  dto;
     }
 
