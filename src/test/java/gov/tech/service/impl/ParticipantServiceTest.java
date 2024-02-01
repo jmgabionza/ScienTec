@@ -6,7 +6,6 @@ import gov.tech.domain.LunchSession;
 import gov.tech.model.UserForm;
 import gov.tech.service.AppServiceDto;
 import gov.tech.service.ParticipantService;
-import gov.tech.service.impl.ParticipantServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +25,7 @@ public class ParticipantServiceTest {
     private SessionDao sessionDao;
 
     @InjectMocks
-    ParticipantService service = new ParticipantServiceImpl();
+    ParticipantService service = new ParticipantServiceImpl(participantDao, sessionDao);
 
     @Test
     public void testGetDemographics(){

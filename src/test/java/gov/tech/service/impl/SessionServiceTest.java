@@ -7,10 +7,7 @@ import gov.tech.domain.Participant;
 import gov.tech.exception.AppServiceException;
 import gov.tech.model.UserForm;
 import gov.tech.service.LunchObserver;
-import gov.tech.service.ParticipantService;
 import gov.tech.service.SessionService;
-import gov.tech.service.impl.ParticipantServiceImpl;
-import gov.tech.service.impl.SessionServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +31,7 @@ public class SessionServiceTest {
     private LunchObserver lunchObserver;
 
     @InjectMocks
-    SessionService service = new SessionServiceImpl();
+    SessionService service = new SessionServiceImpl(participantDao,sessionDao,lunchObserver);
 
     @Test
     public void testCreateSession(){

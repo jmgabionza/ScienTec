@@ -5,7 +5,6 @@ import gov.tech.dao.SessionDao;
 import gov.tech.domain.LunchSession;
 import gov.tech.domain.Participant;
 import gov.tech.service.LunchObserver;
-import gov.tech.service.impl.LunchObserverImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +26,7 @@ public class LunchObserverTest {
     private SessionDao sessionDao;
 
     @InjectMocks
-    private LunchObserver observer = new LunchObserverImpl();
+    private LunchObserver observer = new LunchObserverImpl(sessionDao, participantDao);
 
     @Test
     public void testChooseARestaurant(){
