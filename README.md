@@ -10,6 +10,19 @@ How it works:
 4. An admin can close the session on the `Admin` page. once a session closes, it will select a random restaurant from all the `PARTICIPANT`s. This result will be saved in the `LUNCHSESSION` database
 
 
+Download and run the source code on your local machine
+=
+Github repository: <br/>
+https://github.com/jmgabionza/ScienTec
+
+
+Clone the master branch on your local directory: <br/>
+`cd /your/desired/directory` <br/>
+`git clone https://github.com/jmgabionza/ScienTec.git`
+
+
+run `Application.java` to start Spring Boot and use the below URLS
+
 `URLs`
 =
 Home Page - http://localhost:8081/
