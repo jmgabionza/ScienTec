@@ -17,9 +17,9 @@ import java.util.List;
 
 @Service
 public class SessionServiceImpl implements SessionService {
-    private final ParticipantDao participantDao;
-    private final SessionDao sessionDao;
-    private final LunchObserver observer;
+    private ParticipantDao participantDao;
+    private SessionDao sessionDao;
+    private LunchObserver observer;
 
     @Autowired
     public SessionServiceImpl(ParticipantDao participantDao, SessionDao sessionDao, LunchObserver observer) {
@@ -41,7 +41,7 @@ public class SessionServiceImpl implements SessionService {
             sessionDao.save(lunchSession);
             //observer will notify participants of the new session
             observer.inviteParticipants();
-            return "Your Session is created successfully. **Participants notified** ";
+            return "Your Session is created successfully.";
         }
 
         return "Unable to create Session. The ID already exists.";
@@ -69,7 +69,7 @@ public class SessionServiceImpl implements SessionService {
 
         // when session is closed, the observer will perform below actions
         String chosenRestaurant =  observer.chooseARestaurant(participants);
-        System.out.println("The chosen restaurant is....... " + chosenRestaurant + "!!!");
+        System.out.println("The chosen restaurant is..... " + chosenRestaurant + "!!!");
         observer.updateResult(lunchSession, chosenRestaurant);
         return chosenRestaurant;
     }

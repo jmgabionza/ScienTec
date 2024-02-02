@@ -21,12 +21,11 @@ import java.util.List;
 public class AppController {
     @Value("${spring.application.name}")
     String appName;
-    SessionService sessionService;
-    ParticipantService participantService;
+    private final SessionService sessionService;
+    private final ParticipantService participantService;
 
     @Autowired
     public AppController(SessionService sessionService, ParticipantService participantService) {
-        this.appName = appName;
         this.sessionService = sessionService;
         this.participantService = participantService;
     }
@@ -61,6 +60,8 @@ public class AppController {
         String response = participantService.submitChoice(dto);
         model.addAttribute("appName", appName);
         model.addAttribute("response", response);
+        model.addAttribute("userForm", new UserForm());
+
 
         return "home";
     }
@@ -78,10 +79,10 @@ public class AppController {
             return "results";
         }
         if (lunchSession.isSessionActive()){
-            model.addAttribute("response", "Session is still OPEN. Join now!");
+            model.addAttribute("response", "Session is still <b>OPEN</b>. Join now!");
         }else {
-            model.addAttribute("response", "Session is already CLOSED. " + System.lineSeparator() +
-                    "Result = " + lunchSession.getResult());
+            model.addAttribute("response", "Session is <b>CLOSED</b>. <br>" +
+                    "Result = <b>" + lunchSession.getResult() +"</b>");
         }
         model.addAttribute("results", results);
 
@@ -113,9 +114,9 @@ public class AppController {
             UserForm userForm = new UserForm();
             model.addAttribute("userForm", userForm);
             if (results.isEmpty() && chosenRestaurant.isBlank()){
-                model.addAttribute("response", "Looks like no one participated....");
+                model.addAttribute("response", "Looks like no one participated...");
             }else {
-                model.addAttribute("response", "We are eating at..... " + chosenRestaurant + "!!!");
+                model.addAttribute("response", "We are eating at... <b>" + chosenRestaurant + "</b>!!!");
             }
         } catch (AppServiceException e) {
             String response = e.getMessage();

@@ -2,9 +2,11 @@ package gov.tech.dao.impl;
 
 import gov.tech.dao.ParticipantDao;
 import gov.tech.domain.Participant;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.NoResultException;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class ParticipantDaoImpl implements ParticipantDao {
     }
 
     @Override
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void save(Participant participant) {
         try (org.hibernate.Session session = sessionFactory.openSession()) {
             session.beginTransaction();

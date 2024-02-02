@@ -13,8 +13,8 @@ import java.util.Random;
 
 @Service
 public class LunchObserverImpl implements LunchObserver {
-    SessionDao sessionDao;
-    ParticipantDao participantDao;
+    private SessionDao sessionDao;
+    private ParticipantDao participantDao;
 
     @Autowired
     public LunchObserverImpl(SessionDao sessionDao, ParticipantDao participantDao) {

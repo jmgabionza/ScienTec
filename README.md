@@ -12,7 +12,7 @@ How it works:
 
 Download and run the source code on your local machine
 =
-Github repository: <br/>
+GitHub repository: <br/>
 https://github.com/jmgabionza/ScienTec
 
 
@@ -37,11 +37,11 @@ Thought process for this exam:
 =
 1. Identify domain objects - a `Participant`, and a `LunchSession`
 2. Identify the architecture to be used - MVC front-end with an onion architecture for backend
-4. Create a mock-up UI using `html `
-5. Create a Controller for http requests
-6. Identify a simple server-side rendering framework - `Thymeleaf `was used since it readily comes with Spring boot
-7. Identify database - Used `H2` as it came with Spring Boot
-8. Create the DAO layer for the 2 domains using `Hibernate`
+3. Create a mock-up UI using `html `
+4. Create a Controller for http requests
+5. Identify a simple server-side rendering framework - `Thymeleaf `was used since it readily comes with Spring boot
+6. Identify database - Used `H2` as it came with Spring Boot
+7. Create the DAO layer for the 2 domains using `Hibernate`
 8. Create the Service Layer and Utility classes - implemented an Observer design pattern for event-based methods
 9. Unit Tests using JUnit and Mockito
 10. Make it work, then make it beautiful - Used `BootStrap` make the frontend presentable.

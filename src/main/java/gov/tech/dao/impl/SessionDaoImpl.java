@@ -2,9 +2,10 @@ package gov.tech.dao.impl;
 
 import gov.tech.dao.SessionDao;
 import gov.tech.domain.LunchSession;
-import jakarta.persistence.Query;
+import jakarta.persistence.LockModeType;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     @Override
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void save(LunchSession domain) {
         try (org.hibernate.Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -32,6 +34,7 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     @Override
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public void update(LunchSession domain) {
         try (org.hibernate.Session session = sessionFactory.openSession()) {
             session.beginTransaction();

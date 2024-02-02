@@ -37,7 +37,7 @@ public class SessionServiceTest {
     public void testCreateSession(){
         Mockito.when(sessionDao.getById("sessionId")).thenReturn(null);
         String result = service.createSession("sessionId");
-        Assertions.assertEquals("Your Session is created successfully. **Participants notified** ", result);
+        Assertions.assertEquals("Your Session is created successfully.", result);
 
         // existing session
         Mockito.when(sessionDao.getById("sessionId")).thenReturn(new LunchSession());

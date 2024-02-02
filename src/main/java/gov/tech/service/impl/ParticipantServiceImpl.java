@@ -8,7 +8,6 @@ import gov.tech.model.UserForm;
 import gov.tech.service.AppServiceDto;
 import gov.tech.service.ParticipantService;
 import gov.tech.util.AppServiceUtil;
-import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +16,8 @@ import java.util.List;
 
 @Service
 public class ParticipantServiceImpl implements ParticipantService {
-    private final ParticipantDao participantDao;
-    private final SessionDao sessionDao;
+    private ParticipantDao participantDao;
+    private SessionDao sessionDao;
 
     @Autowired
     public ParticipantServiceImpl(ParticipantDao participantDao, SessionDao sessionDao) {
@@ -29,7 +28,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     @Transactional
     @Override
     public String submitChoice(AppServiceDto dto) {
-        String response = "";
+        String response;
         LunchSession lunchSession = sessionDao.getById(dto.getSessionId());
         boolean isDuplicate = isDuplicate(dto);
 
